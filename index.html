@@ -301,6 +301,7 @@ var PROGRESSION_RULES = [
   "First four weeks — one variable at a time: never increase load AND sets on the same exercise in the same week. Order: reps first, then weight, establish recovery at that weight, only then consider adding a set."
 ];
 var LEG_DAY_RULES = [
+  "Leg-day track record: 3 leg days completed since the 2 Nov restart — the same workout each time, knee 0/10 and back 0/10 in all three, at full load (leg press top set 80 kg ×10). The early knee and back trouble is treated as starting-weeks adaptation, not an ongoing limitation, so leg training progresses normally; pain is still logged every session as a check, not managed as a limiter.",
   "Rotation, not calendar: the weekday labels are the training order, not a lock. If your gym rotation puts leg day on a Tuesday, train it and log it there — keep the sequence Lower A → Upper A → Cardio + Core → Rest → Lower B → Upper B → Rest in order and let the dates shift.",
   "Combined leg day — hinge is mandatory: if Lower A and Lower B ever merge into one combined session (as on Tue 17 Nov), a hip hinge goes in — dumbbell Romanian deadlift or hip thrust, even light. The 17 Nov session had no hinge at all; that is the one clear gap to fix, not the loads or the exercise order.",
   "Combined-day cap: about 16 working sets total. Your 17 Nov session was 18 sets — strong, but over the cap. On a combined day, drop one quad isolation or the second squat pattern before you ever drop the hinge or the leg curl.",
@@ -308,7 +309,7 @@ var LEG_DAY_RULES = [
   "The 10 min cycle after legs is a cooldown / finisher — welcome, and it counts toward the day's activity, but it does not replace Wednesday's 30–40 min Zone 2 session."
 ];
 var LOGGED_SESSIONS = [
-  {date:"2026-11-17", title:"Leg day — Tue 17 Nov 2026", knee:0, back:0, finisher:"10 min stationary cycle", note:"Full leg session on your own rotation (not the plan's Tuesday Upper A). Knee 0/10 and back 0/10 throughout, including leg press 80 kg ×10 — consistent with starting-weeks adaptation, but one pain-free session does not prove it, so the traffic-light stays as a safety net, not a limiter. No hip hinge was in this session — see the combined leg day rule in the Plan tab.", exercises:[
+  {date:"2026-11-17", title:"Leg day — Tue 17 Nov 2026 · 3rd leg day since restart", knee:0, back:0, finisher:"10 min stationary cycle", note:"Full leg session on your own rotation (not the plan's Tuesday Upper A). This was the 3rd identical leg day since the 2 Nov restart — same exercises and loads all three times, knee 0/10 and back 0/10 in every one, including leg press 80 kg ×10. Three pain-free sessions at full load is a pattern, not a one-off: the earlier knee and back trouble is now read as starting-weeks adaptation, and the traffic-light stays only as a dormant safety net, not a limiter. Keep logging pain each session so a real problem would still be caught early. No hip hinge was in this session — see the combined leg day rule in the Plan tab.", exercises:[
     {name:"Dumbbell squats", sets:"10 kg × 15 · 12.5 kg × 12 · 15 kg × 10"},
     {name:"Leg press", sets:"40 kg × 15 · 60 kg × 12 · 80 kg × 10"},
     {name:"Leg curl", sets:"25 kg × 15 · 30 kg × 12 · 35 kg × 10"},
@@ -942,7 +943,7 @@ function downloadSiteZip(btn,statusEl){
 function renderPlan(){
   var week=weekNumberFor(todayStr()), curStage=week!=null?stageForWeek(week):null;
   var h="";
-  h+='<p class="warnbanner" style="background:color-mix(in srgb,var(--accent) 14%,transparent)">Final plan — built by Natasha, critiqued by ChatGPT, finalised Nov 2026. Squats and leg press are in: your knee is mild, so load is managed, not avoided. 4 strength days + 1 cardio day + 2 rest days.</p>';
+  h+='<p class="warnbanner" style="background:color-mix(in srgb,var(--accent) 14%,transparent)">Final plan — built by Natasha, critiqued by ChatGPT, finalised Nov 2026. Squats and leg press are in and progressing normally: knee and back have been 0/10 across all 3 leg days since the restart, so the early trouble is treated as starting-weeks adaptation. 4 strength days + 1 cardio day + 2 rest days.</p>';
   h+='<h2 class="section-title font-display">Stages — readiness-based</h2>';
   STAGES.forEach(function(p){
     var active=curStage&&curStage.name===p.name;
@@ -977,7 +978,7 @@ function renderPlan(){
   DELOAD_RULES.forEach(function(r){ h+="<li>"+esc(r)+"</li>"; });
   h+="</ul></div>";
   h+='<h2 class="section-title font-display">Knee traffic-light</h2>'
-    +'<p class="small muted" style="margin-bottom:.75rem;line-height:1.6">Latest check — Tue 17 Nov 2026: knee 0/10 and back 0/10 through a full leg session topped by leg press 80 kg ×10. That supports the starting-weeks adaptation read, so squats and leg press keep progressing normally — the traffic-light below is now a safety net, not a limiter. Keep logging knee and back 0–10 every session; act on a pattern across sessions, not on one good or one bad day alone.</p>'
+    +'<p class="small muted" style="margin-bottom:.75rem;line-height:1.6">Status at Tue 17 Nov 2026: 3 leg days completed since the 2 Nov restart — the same workout each time, knee 0/10 and back 0/10 in all three, including leg press 80 kg ×10. That is a pattern, not a single good day: the earlier knee and back trouble is now read as starting-weeks adaptation, not an ongoing limitation, and squats and leg press progress normally. The traffic-light below is dormant — a safety net only, not a limiter. Keep logging knee and back 0–10 every session; if pain ever returns, act on the pattern across sessions, not on one day alone.</p>'
     +ruleTable(KNEE_RULES,"Signal","Action");
   h+='<h2 class="section-title font-display">Squat &amp; leg press form</h2><div class="panel daycard"><ul class="disc">';
   FORM_RULES.forEach(function(r){ h+="<li>"+esc(r)+"</li>"; });
