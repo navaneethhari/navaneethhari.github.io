@@ -294,10 +294,28 @@ var WARMUP_RULES = [
 ];
 var PROGRESSION_RULES = [
   "Double progression: work inside the listed rep range. When you hit the TOP of the range on every working set, with clean technique AND the stage's RIR respected, increase the load next session by the smallest jump — leg press +5 kg, goblet squat = next dumbbell up, machines = one pin.",
+  "Pyramid loading is recognised — it is how you actually train (e.g. 17 Nov leg press 40×15 / 60×12 / 80×10). On a pyramid, progression is judged on the TOP set only: the earlier sets are the ramp, not the test. When the top set hits the top of its rep range cleanly at the stage RIR, raise the top set by the smallest jump next time and rebuild the ramp below it. Top sets to beat from 17 Nov: dumbbell squat 15 kg ×10, leg press 80 kg ×10, leg curl 35 kg ×10, leg extension 40 kg ×10, calf raise 60 kg ×10, sumo squat 15 kg ×10.",
   "Completing the reps with deteriorating technique does NOT earn a load increase.",
   "If performance drops two sessions in a row, first check sleep, fatigue, technique and recovery — don't automatically cut the load.",
   "Never chase leg press numbers at the expense of range of motion.",
   "First four weeks — one variable at a time: never increase load AND sets on the same exercise in the same week. Order: reps first, then weight, establish recovery at that weight, only then consider adding a set."
+];
+var LEG_DAY_RULES = [
+  "Rotation, not calendar: the weekday labels are the training order, not a lock. If your gym rotation puts leg day on a Tuesday, train it and log it there — keep the sequence Lower A → Upper A → Cardio + Core → Rest → Lower B → Upper B → Rest in order and let the dates shift.",
+  "Combined leg day — hinge is mandatory: if Lower A and Lower B ever merge into one combined session (as on Tue 17 Nov), a hip hinge goes in — dumbbell Romanian deadlift or hip thrust, even light. The 17 Nov session had no hinge at all; that is the one clear gap to fix, not the loads or the exercise order.",
+  "Combined-day cap: about 16 working sets total. Your 17 Nov session was 18 sets — strong, but over the cap. On a combined day, drop one quad isolation or the second squat pattern before you ever drop the hinge or the leg curl.",
+  "Sumo dumbbell squat is a Lower B variation: it swaps IN for the paused goblet squat, it does not add on top of it. Two squat patterns plus leg press in one session is enough quad work.",
+  "The 10 min cycle after legs is a cooldown / finisher — welcome, and it counts toward the day's activity, but it does not replace Wednesday's 30–40 min Zone 2 session."
+];
+var LOGGED_SESSIONS = [
+  {date:"2026-11-17", title:"Leg day — Tue 17 Nov 2026", knee:0, back:0, finisher:"10 min stationary cycle", note:"Full leg session on your own rotation (not the plan's Tuesday Upper A). Knee 0/10 and back 0/10 throughout, including leg press 80 kg ×10 — consistent with starting-weeks adaptation, but one pain-free session does not prove it, so the traffic-light stays as a safety net, not a limiter. No hip hinge was in this session — see the combined leg day rule in the Plan tab.", exercises:[
+    {name:"Dumbbell squats", sets:"10 kg × 15 · 12.5 kg × 12 · 15 kg × 10"},
+    {name:"Leg press", sets:"40 kg × 15 · 60 kg × 12 · 80 kg × 10"},
+    {name:"Leg curl", sets:"25 kg × 15 · 30 kg × 12 · 35 kg × 10"},
+    {name:"Leg extension", sets:"30 kg × 15 · 35 kg × 12 · 40 kg × 10"},
+    {name:"Calf raise", sets:"30 kg × 15 · 40 kg × 12 · 60 kg × 10"},
+    {name:"Sumo squats with dumbbells", sets:"10 kg × 15 · 12.5 kg × 12 · 15 kg × 10"}
+  ]}
 ];
 var DELOAD_RULES = [
   "Deload by signals, not by calendar. Take a deload week when several of these accumulate: declining performance, persistent soreness, worsening joint discomfort, previously manageable weights feeling unusually hard.",
@@ -311,6 +329,7 @@ var KNEE_RULES = [
 ];
 var FORM_RULES = [
   "Goblet squat: heels stay down, knees track out over the toes (never cave in), chest tall, 2–3 sec controlled descent, depth to at least parallel if pain-free — otherwise the deepest pain-free depth (note it).",
+  "Sumo dumbbell squat (Lower B variation): stance clearly wider than shoulder width, toes turned slightly out, knees tracking out over the toes, chest tall, same controlled descent — hold one dumbbell with both hands between your legs.",
   "Leg press: comfortable stance, whole foot supported on the plate, control the descent, stop before the pelvis rolls off the pad, never slam the knees locked. No single 'safest' foot position — comfort, full-foot support and control decide.",
   "Paused goblet squat (Fri): light load, full 2-second pause at the bottom, same squat rules."
 ];
@@ -366,8 +385,8 @@ function cfg(slug){ return EX[slug] || {targets:[],targetLabel:"Target muscles",
 
 var PLAN_DAYS = [
  {dow:0,short:"MON",title:"Lower A — Squat emphasis",minutes:60,kind:"lift",exercises:[
-   {name:"Goblet squat",demo:"goblet-squat",scheme:"3 × 8–12"},
-   {name:"Dumbbell Romanian deadlift",demo:"db-rdl",scheme:"2 × 10–12",note:"Start light"},
+   {name:"Goblet squat",demo:"goblet-squat",scheme:"3 × 8–12",note:"Pyramid fine — judge progression on the top set (17 Nov: 15 kg ×10)"},
+   {name:"Dumbbell Romanian deadlift",demo:"db-rdl",scheme:"2 × 10–12",note:"Start light · the hinge — never the exercise dropped on a combined leg day"},
    {name:"Leg press",demo:"leg-press",scheme:"2 × 10–12"},
    {name:"Seated leg curl",demo:"leg-curl",scheme:"2 × 12–15"},
    {name:"Standing calf raise",demo:"standing-calf-raise",scheme:"2 × 12–15"},
@@ -387,9 +406,9 @@ var PLAN_DAYS = [
    {name:"Hip flexor mobility",demo:"hip-flexor-mobility",scheme:"3–5 min"}]},
  {dow:3,short:"THU",title:"Rest",minutes:null,kind:"rest",note:"Rest day. Normal walking and daily activity; optional gentle mobility.",exercises:[]},
  {dow:4,short:"FRI",title:"Lower B — Leg press emphasis",minutes:60,kind:"lift",note:"Most demanding session of the week — in the first two weeks run 2 sets on most exercises; never force the listed sets when recovery is poor.",exercises:[
-   {name:"Leg press",demo:"leg-press",scheme:"3 × 8–12",note:"Heaviest lift of the week — full range, no ego loading"},
+   {name:"Leg press",demo:"leg-press",scheme:"3 × 8–12",note:"Heaviest lift of the week — full range, no ego loading · top set to beat: 80 kg ×10 (17 Nov)"},
    {name:"Hip thrust",demo:"hip-thrust",scheme:"3 × 10–12"},
-   {name:"Paused goblet squat",demo:"goblet-squat",scheme:"2 × 10–12",note:"Light · 2-sec pause at the bottom"},
+   {name:"Paused goblet squat",demo:"goblet-squat",scheme:"2 × 10–12",note:"Light · 2-sec pause at the bottom · Variation: sumo dumbbell squat (wide stance, toes slightly out) swaps in for this — logged 17 Nov 10×15 / 12.5×12 / 15×10 — do not add it on top"},
    {name:"Leg curl",demo:"leg-curl",scheme:"2 × 12–15"},
    {name:"Leg extension",demo:"leg-extension",scheme:"2 × 12–15",note:"Pain-free range only"},
    {name:"Seated calf raise",demo:"seated-calf-raise",scheme:"2 × 12–15"},
@@ -937,6 +956,17 @@ function renderPlan(){
     h+='<li><span><span class="dow">'+d.short+'</span><span>'+esc(d.title)+'</span></span><span class="muted">'+(d.minutes!=null?(d.minutes+" min"):"Rest")+"</span></li>";
   });
   h+="</ul></div>";
+  h+='<h2 class="section-title font-display">Latest logged session</h2>';
+  LOGGED_SESSIONS.forEach(function(s){
+    h+='<div class="panel daycard"><p class="kicker kicker-accent">'+esc(s.title)+'</p>'
+      +'<p class="small muted" style="margin-top:.25rem">Knee <strong style="color:var(--text)">'+s.knee+'/10</strong> · Back <strong style="color:var(--text)">'+s.back+'/10</strong> · Finisher: '+esc(s.finisher)+' · 18 working sets</p>'
+      +'<ul class="listrows" style="margin-top:.5rem">';
+    s.exercises.forEach(function(e){ h+='<li><span style="font-weight:600">'+esc(e.name)+'</span><span class="muted" style="display:block">'+esc(e.sets)+'</span></li>'; });
+    h+='</ul><p class="small muted" style="margin-top:.75rem;line-height:1.6">'+esc(s.note)+'</p></div>';
+  });
+  h+='<h2 class="section-title font-display">Leg day rules — rotation &amp; combined days</h2><div class="panel daycard"><ul class="disc">';
+  LEG_DAY_RULES.forEach(function(r){ h+="<li>"+esc(r)+"</li>"; });
+  h+="</ul></div>";
   h+='<h2 class="section-title font-display">Warm-up</h2><div class="panel daycard"><ul class="disc">';
   WARMUP_RULES.forEach(function(r){ h+="<li>"+esc(r)+"</li>"; });
   h+="</ul></div>";
@@ -946,7 +976,9 @@ function renderPlan(){
   h+='<h2 class="section-title font-display">Deload — by signals, not calendar</h2><div class="panel daycard"><ul class="disc">';
   DELOAD_RULES.forEach(function(r){ h+="<li>"+esc(r)+"</li>"; });
   h+="</ul></div>";
-  h+='<h2 class="section-title font-display">Knee traffic-light</h2>'+ruleTable(KNEE_RULES,"Signal","Action");
+  h+='<h2 class="section-title font-display">Knee traffic-light</h2>'
+    +'<p class="small muted" style="margin-bottom:.75rem;line-height:1.6">Latest check — Tue 17 Nov 2026: knee 0/10 and back 0/10 through a full leg session topped by leg press 80 kg ×10. That supports the starting-weeks adaptation read, so squats and leg press keep progressing normally — the traffic-light below is now a safety net, not a limiter. Keep logging knee and back 0–10 every session; act on a pattern across sessions, not on one good or one bad day alone.</p>'
+    +ruleTable(KNEE_RULES,"Signal","Action");
   h+='<h2 class="section-title font-display">Squat &amp; leg press form</h2><div class="panel daycard"><ul class="disc">';
   FORM_RULES.forEach(function(r){ h+="<li>"+esc(r)+"</li>"; });
   h+="</ul></div>";
